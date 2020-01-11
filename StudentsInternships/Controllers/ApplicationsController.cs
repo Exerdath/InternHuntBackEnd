@@ -42,7 +42,7 @@ namespace StudentsInternships.Controllers
 
 
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Database failure");
             }
@@ -57,26 +57,26 @@ namespace StudentsInternships.Controllers
 
                 return _mapper.Map<AppsModel[]>(results);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Database failure");
             }
         }
 
-        [HttpPost("/{id}")]
-        public async Task<ActionResult<AppsModel>> ApplyToInternship(AppsModel model)
+        [HttpPost("apply")]
+        public async Task<ActionResult<AppsModel>> ApplyToInternship(ApplyToIntModel model)
         {
             try
-            {
-                var app = _mapper.Map<Application>(model);
-
-                var result = await _repository.ApplyToInternship(app);
-                if (result == null)
+            { 
+                var result = await _repository.ApplyToInternship(model.studentId,model.internshipId);
+                if (result == 0)
                 {
                     return BadRequest("Could not complete the application ");
                 }
 
-                return _mapper.Map<AppsModel>(result);
+                var newApp = await _repository.GetAppById(result);
+
+                return _mapper.Map<AppsModel>(newApp);
             }
             catch (Exception e)
             {
@@ -99,10 +99,31 @@ namespace StudentsInternships.Controllers
 
                 return _mapper.Map<AppsModel>(result);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Database failure");
             }
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAppById(int id)
+        {
+            try
+            {
+                var result = await _repository.DeleteApp(id);
+                if (result == false)
+                {
+                    return BadRequest("Could not complete the app delete");
+                }
+
+                return Ok("Deleted with success");
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Database failure");
+            }
+        }
+
+
     }
 }

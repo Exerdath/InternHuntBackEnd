@@ -22,12 +22,17 @@ namespace StudentsInternships.Data.Repositories
             _context.Add(company);
         }
 
-        public async Task<bool> EditCompany(Company company)
+        public async Task<Company> EditCompany(Company company)
         {
             IQueryable<Company> query = _context.Companies.Where(c => c.UserId == company.UserId);
             var theCompany = query.FirstOrDefault();
             theCompany = company;
-            return await SaveChangesAsync();
+            var check=await SaveChangesAsync();
+            if (check)
+            {
+                return theCompany;
+            }
+            return null;
         }
 
         public async Task<Company[]> GetAllCompaniesAsync()

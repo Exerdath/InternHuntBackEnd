@@ -11,7 +11,7 @@ namespace StudentsInternships.Data.Repositories
     public interface IInternshipsRepository
     {
         void Add<Internship>(Internship internship);
-        Task<Internship[]> GetAllInternshipsAsync(bool includeCompany);
+        Task<Internship[]> GetAllInternshipsAsync();
         Task<bool> SaveChangesAsync();
         Task<Internship[]> GetInternshipsById(int userId, string userType);
         Task<Internship> AddInternship(Internship internship);

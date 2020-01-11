@@ -10,5 +10,6 @@ namespace StudentsInternships.Data.Repositories
     public interface ICitiesRepository
     {
         Task<City[]> GetAllCities();
+        Task<City> getCityById(int cityId);
     }
 }

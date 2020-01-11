@@ -9,7 +9,7 @@ using StudentsInternships.Data;
 namespace StudentsInternships.Migrations
 {
     [DbContext(typeof(InternHuntContext))]
-    [Migration("20200105061156_First")]
+    [Migration("20200111075701_First")]
     partial class First
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -153,11 +153,16 @@ namespace StudentsInternships.Migrations
                     b.Property<string>("InternshipName")
                         .HasColumnType("TEXT");
 
+                    b.Property<int?>("TechnologyId")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("InternshipId");
 
                     b.HasIndex("CityId");
 
                     b.HasIndex("CompanyUserId");
+
+                    b.HasIndex("TechnologyId");
 
                     b.ToTable("Internships");
 
@@ -167,102 +172,32 @@ namespace StudentsInternships.Migrations
                             InternshipId = 1,
                             CityId = 1,
                             InternshipDescription = "Microsoft 1 Internship",
-                            InternshipName = "M1 Internship"
+                            InternshipName = "M1 Internship",
+                            TechnologyId = 1
                         },
                         new
                         {
                             InternshipId = 2,
                             CityId = 2,
                             InternshipDescription = "Microsoft 2 Internship",
-                            InternshipName = "M2 Internship"
+                            InternshipName = "M2 Internship",
+                            TechnologyId = 2
                         },
                         new
                         {
                             InternshipId = 3,
                             CityId = 3,
                             InternshipDescription = "Apple 1 Internship",
-                            InternshipName = "A1 Internship"
+                            InternshipName = "A1 Internship",
+                            TechnologyId = 3
                         },
                         new
                         {
                             InternshipId = 4,
                             CityId = 1,
                             InternshipDescription = "Apple 2 Internship",
-                            InternshipName = "A2 Internship"
-                        });
-                });
-
-            modelBuilder.Entity("StudentsInternships.Data.Entities.InternshipTechnology", b =>
-                {
-                    b.Property<int>("InternshipId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("TechnologyId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("InternshipId", "TechnologyId");
-
-                    b.HasIndex("TechnologyId");
-
-                    b.ToTable("InternshipTechnologies");
-
-                    b.HasData(
-                        new
-                        {
-                            InternshipId = 1,
-                            TechnologyId = 1
-                        },
-                        new
-                        {
-                            InternshipId = 1,
-                            TechnologyId = 2
-                        },
-                        new
-                        {
-                            InternshipId = 2,
-                            TechnologyId = 1
-                        },
-                        new
-                        {
-                            InternshipId = 1,
+                            InternshipName = "A2 Internship",
                             TechnologyId = 4
-                        });
-                });
-
-            modelBuilder.Entity("StudentsInternships.Data.Entities.StudentTechnology", b =>
-                {
-                    b.Property<int>("StudentId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("TechnologyId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("StudentId", "TechnologyId");
-
-                    b.HasIndex("TechnologyId");
-
-                    b.ToTable("StudentTechnologies");
-
-                    b.HasData(
-                        new
-                        {
-                            StudentId = 1,
-                            TechnologyId = 1
-                        },
-                        new
-                        {
-                            StudentId = 1,
-                            TechnologyId = 2
-                        },
-                        new
-                        {
-                            StudentId = 2,
-                            TechnologyId = 4
-                        },
-                        new
-                        {
-                            StudentId = 2,
-                            TechnologyId = 5
                         });
                 });
 
@@ -363,7 +298,12 @@ namespace StudentsInternships.Migrations
                     b.Property<int?>("CityId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("TechnologyId")
+                        .HasColumnType("INTEGER");
+
                     b.HasIndex("CityId");
+
+                    b.HasIndex("TechnologyId");
 
                     b.HasDiscriminator().HasValue("Student");
 
@@ -373,28 +313,32 @@ namespace StudentsInternships.Migrations
                             UserId = 1,
                             Password = "ent",
                             Username = "Stud",
-                            CityId = 1
+                            CityId = 1,
+                            TechnologyId = 1
                         },
                         new
                         {
                             UserId = 2,
                             Password = "dent",
                             Username = "Stu",
-                            CityId = 2
+                            CityId = 2,
+                            TechnologyId = 1
                         },
                         new
                         {
                             UserId = 3,
                             Password = "udent",
                             Username = "St",
-                            CityId = 2
+                            CityId = 2,
+                            TechnologyId = 2
                         },
                         new
                         {
                             UserId = 4,
                             Password = "tudent",
                             Username = "S",
-                            CityId = 3
+                            CityId = 3,
+                            TechnologyId = 3
                         });
                 });
 
@@ -433,36 +377,10 @@ namespace StudentsInternships.Migrations
                     b.HasOne("StudentsInternships.Data.Entities.Company", "Company")
                         .WithMany("Interships")
                         .HasForeignKey("CompanyUserId");
-                });
-
-            modelBuilder.Entity("StudentsInternships.Data.Entities.InternshipTechnology", b =>
-                {
-                    b.HasOne("StudentsInternships.Data.Entities.Internship", "Internship")
-                        .WithMany("InternshipTechnologies")
-                        .HasForeignKey("InternshipId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
 
                     b.HasOne("StudentsInternships.Data.Entities.Technology", "Technology")
-                        .WithMany("InternshipTechnologies")
-                        .HasForeignKey("TechnologyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("StudentsInternships.Data.Entities.StudentTechnology", b =>
-                {
-                    b.HasOne("StudentsInternships.Data.Entities.Student", "Student")
-                        .WithMany("StudentTechnologies")
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("StudentsInternships.Data.Entities.Technology", "Technology")
-                        .WithMany("StudentTechnologies")
-                        .HasForeignKey("TechnologyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Internships")
+                        .HasForeignKey("TechnologyId");
                 });
 
             modelBuilder.Entity("StudentsInternships.Data.Entities.Student", b =>
@@ -470,6 +388,10 @@ namespace StudentsInternships.Migrations
                     b.HasOne("StudentsInternships.Data.Entities.City", "City")
                         .WithMany("Students")
                         .HasForeignKey("CityId");
+
+                    b.HasOne("StudentsInternships.Data.Entities.Technology", "Technology")
+                        .WithMany("Students")
+                        .HasForeignKey("TechnologyId");
                 });
 #pragma warning restore 612, 618
         }

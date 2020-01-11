@@ -42,6 +42,8 @@ namespace StudentsInternships.Data.Repositories
             return theApp;
         }
 
+
+
         public async Task<Application[]> GetAllApplicationsAsync()
         {
             IQueryable<Application> query = _context.Applications;
@@ -75,10 +77,45 @@ namespace StudentsInternships.Data.Repositories
 
             return await query.ToArrayAsync();
         }
+        public async Task<bool> DeleteApp(int id)
+        {
+            IQueryable<Application> query = _context.Applications.Where(app => app.ApplicationId == id);
+            var app = query.FirstOrDefault();
+            _context.Applications.Remove(app);
+            return await SaveChangesAsync();
+        }
 
         public async Task<bool> SaveChangesAsync()
         {
             return (await _context.SaveChangesAsync()) > 0;
+        }
+
+        public async Task<int> ApplyToInternship(int studentId, int internshipId)
+        {
+            Student student = await _context.Students.Where(s => s.UserId == studentId).FirstOrDefaultAsync();
+            Internship internship = await _context.Internships.Where(s => s.InternshipId == internshipId).FirstOrDefaultAsync();
+
+            Application app = new Application();
+            app.Student = student;
+            app.Internship = internship;
+            app.Status = "Applied to";
+
+            _context.Add(app);
+            await SaveChangesAsync();
+            return  app.ApplicationId;
+
+        }
+
+        public async Task<Application> GetAppById(int result)
+        {
+            IQueryable<Application> query = _context.Applications.Where(a=>a.ApplicationId==result);
+
+            query = query
+                .Include(a => a.Student)
+                .Include(a => a.Internship)
+                .ThenInclude(i => i.Company);
+
+            return await query.FirstOrDefaultAsync();
         }
     }
 }

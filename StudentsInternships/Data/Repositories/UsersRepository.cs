@@ -37,7 +37,7 @@ namespace StudentsInternships.Data.Repositories
 
             if (queryStudents.Count() != 0)
             {
-                queryStudents = queryStudents.Include(s => s.City);
+                queryStudents = queryStudents.Include(s => s.City).Include(s=>s.Technology);
                 return await queryStudents.FirstOrDefaultAsync();
 
             }

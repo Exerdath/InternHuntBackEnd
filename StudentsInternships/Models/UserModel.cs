@@ -6,6 +6,8 @@
         public string Username { get; set; }
         public string Password { get; set; }
         public CityModel City { get; set; }
+        public TechnologyModel Technology { get; set; }
         public string CompanyDescription { get; set; }
+
     }
 }

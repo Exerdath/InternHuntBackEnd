@@ -9,7 +9,7 @@ namespace StudentsInternships.Data.Entities
         public string InternshipDescription { get; set; }
         public Company Company { get; set; }
         public City City { get; set; }
-        public ICollection<InternshipTechnology> InternshipTechnologies { get; set; }
+        public Technology Technology { get; set; }
         public ICollection<Application> Applications { get; set; }
 
     }

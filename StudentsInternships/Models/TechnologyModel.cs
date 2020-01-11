@@ -2,7 +2,7 @@
 {
     public class TechnologyModel
     {
-        public int TagId { get; set; }
+        public int TechnologyId { get; set; }
         public string Interest { get; set; }
     }
 }

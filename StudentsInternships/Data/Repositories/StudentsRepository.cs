@@ -22,18 +22,25 @@ namespace StudentsInternships.Data.Repositories
             _context.Add(student);
         }
 
-        public async Task<bool> EditStudent(Student student)
+        public async Task<Student> EditStudent(Student student)
         {
             IQueryable<Student> query = _context.Students.Where(s=>s.UserId==student.UserId);
             var theStudent = query.FirstOrDefault();
             theStudent = student;
-            return await SaveChangesAsync();
+            var check = await SaveChangesAsync();
+            if (check)
+            {
+                return theStudent;
+            }
+            return null;
+
         }
 
         public async Task<Student[]> GetAllStudentsAsync()
         {
             IQueryable<Student> query = _context.Students;
-            query = query.Include(s => s.City);
+            query = query.Include(s => s.City)
+                .Include(s=>s.Technology);
             return await query.ToArrayAsync();
         }
 

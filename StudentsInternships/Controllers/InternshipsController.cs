@@ -27,11 +27,11 @@ namespace StudentsInternships.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<InternshipModel[]>> Get(bool includeCompany = false)
+        public async Task<ActionResult<InternshipModel[]>> Get()
         {
             try
             {
-                var results = await _repository.GetAllInternshipsAsync(includeCompany);
+                var results = await _repository.GetAllInternshipsAsync();
                 if (!results.Any())
                 {
                     return NotFound("No Internships in the database");
@@ -63,13 +63,13 @@ namespace StudentsInternships.Controllers
 
 
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Database failure");
             }
         }
 
-        [HttpPost("/add")]
+        [HttpPost("add")]
         public async Task<ActionResult<InternshipModel>> AddInternship(InternshipModel model)
         {
             try
@@ -91,7 +91,7 @@ namespace StudentsInternships.Controllers
             }
         }
 
-        [HttpDelete("/{id}")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteInternship(int id)
         {
             try
@@ -106,7 +106,7 @@ namespace StudentsInternships.Controllers
 
 
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Database failure");
             }

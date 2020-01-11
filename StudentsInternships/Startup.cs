@@ -22,6 +22,7 @@ namespace CoreCodeCamp
             services.AddScoped<ICompaniesRepository, CompaniesRepository>();
             services.AddScoped<IStudentsRepository, StudentsRepository>();
             services.AddScoped<ICitiesRepository, CitiesRepository>();
+            services.AddScoped<ITechnologiesRepository, TechnologiesRepository>();
 
 
             services.AddAutoMapper(typeof(Startup));

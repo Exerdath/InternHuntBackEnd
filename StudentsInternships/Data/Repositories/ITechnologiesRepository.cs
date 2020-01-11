@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StudentsInternships.Data.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +10,6 @@ namespace StudentsInternships.Data.Repositories
     public interface ITechnologiesRepository
     {
         Task<bool> SaveChangesAsync();
-
+        Task<Technology[]> getAllTechnologies();
     }
 }

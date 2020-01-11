@@ -42,7 +42,8 @@ namespace StudentsInternships.Migrations
                     Password = table.Column<string>(nullable: true),
                     Discriminator = table.Column<string>(nullable: false),
                     CompanyDescription = table.Column<string>(nullable: true),
-                    CityId = table.Column<int>(nullable: true)
+                    CityId = table.Column<int>(nullable: true),
+                    TechnologyId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -52,6 +53,12 @@ namespace StudentsInternships.Migrations
                         column: x => x.CityId,
                         principalTable: "Cities",
                         principalColumn: "CityId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Users_Technologies_TechnologyId",
+                        column: x => x.TechnologyId,
+                        principalTable: "Technologies",
+                        principalColumn: "TechnologyId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -64,7 +71,8 @@ namespace StudentsInternships.Migrations
                     InternshipName = table.Column<string>(nullable: true),
                     InternshipDescription = table.Column<string>(nullable: true),
                     CompanyUserId = table.Column<int>(nullable: true),
-                    CityId = table.Column<int>(nullable: true)
+                    CityId = table.Column<int>(nullable: true),
+                    TechnologyId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -81,30 +89,12 @@ namespace StudentsInternships.Migrations
                         principalTable: "Users",
                         principalColumn: "UserId",
                         onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "StudentTechnologies",
-                columns: table => new
-                {
-                    StudentId = table.Column<int>(nullable: false),
-                    TechnologyId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_StudentTechnologies", x => new { x.StudentId, x.TechnologyId });
                     table.ForeignKey(
-                        name: "FK_StudentTechnologies_Users_StudentId",
-                        column: x => x.StudentId,
-                        principalTable: "Users",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_StudentTechnologies_Technologies_TechnologyId",
+                        name: "FK_Internships_Technologies_TechnologyId",
                         column: x => x.TechnologyId,
                         principalTable: "Technologies",
                         principalColumn: "TechnologyId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -132,30 +122,6 @@ namespace StudentsInternships.Migrations
                         principalTable: "Users",
                         principalColumn: "UserId",
                         onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "InternshipTechnologies",
-                columns: table => new
-                {
-                    InternshipId = table.Column<int>(nullable: false),
-                    TechnologyId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_InternshipTechnologies", x => new { x.InternshipId, x.TechnologyId });
-                    table.ForeignKey(
-                        name: "FK_InternshipTechnologies_Internships_InternshipId",
-                        column: x => x.InternshipId,
-                        principalTable: "Internships",
-                        principalColumn: "InternshipId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_InternshipTechnologies_Technologies_TechnologyId",
-                        column: x => x.TechnologyId,
-                        principalTable: "Technologies",
-                        principalColumn: "TechnologyId",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -237,43 +203,43 @@ namespace StudentsInternships.Migrations
 
             migrationBuilder.InsertData(
                 table: "Internships",
-                columns: new[] { "InternshipId", "CityId", "CompanyUserId", "InternshipDescription", "InternshipName" },
-                values: new object[] { 1, 1, null, "Microsoft 1 Internship", "M1 Internship" });
+                columns: new[] { "InternshipId", "CityId", "CompanyUserId", "InternshipDescription", "InternshipName", "TechnologyId" },
+                values: new object[] { 1, 1, null, "Microsoft 1 Internship", "M1 Internship", 1 });
 
             migrationBuilder.InsertData(
                 table: "Internships",
-                columns: new[] { "InternshipId", "CityId", "CompanyUserId", "InternshipDescription", "InternshipName" },
-                values: new object[] { 4, 1, null, "Apple 2 Internship", "A2 Internship" });
+                columns: new[] { "InternshipId", "CityId", "CompanyUserId", "InternshipDescription", "InternshipName", "TechnologyId" },
+                values: new object[] { 2, 2, null, "Microsoft 2 Internship", "M2 Internship", 2 });
 
             migrationBuilder.InsertData(
                 table: "Internships",
-                columns: new[] { "InternshipId", "CityId", "CompanyUserId", "InternshipDescription", "InternshipName" },
-                values: new object[] { 2, 2, null, "Microsoft 2 Internship", "M2 Internship" });
+                columns: new[] { "InternshipId", "CityId", "CompanyUserId", "InternshipDescription", "InternshipName", "TechnologyId" },
+                values: new object[] { 3, 3, null, "Apple 1 Internship", "A1 Internship", 3 });
 
             migrationBuilder.InsertData(
                 table: "Internships",
-                columns: new[] { "InternshipId", "CityId", "CompanyUserId", "InternshipDescription", "InternshipName" },
-                values: new object[] { 3, 3, null, "Apple 1 Internship", "A1 Internship" });
+                columns: new[] { "InternshipId", "CityId", "CompanyUserId", "InternshipDescription", "InternshipName", "TechnologyId" },
+                values: new object[] { 4, 1, null, "Apple 2 Internship", "A2 Internship", 4 });
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "UserId", "Discriminator", "Password", "Username", "CityId" },
-                values: new object[] { 1, "Student", "ent", "Stud", 1 });
+                columns: new[] { "UserId", "Discriminator", "Password", "Username", "CityId", "TechnologyId" },
+                values: new object[] { 1, "Student", "ent", "Stud", 1, 1 });
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "UserId", "Discriminator", "Password", "Username", "CityId" },
-                values: new object[] { 2, "Student", "dent", "Stu", 2 });
+                columns: new[] { "UserId", "Discriminator", "Password", "Username", "CityId", "TechnologyId" },
+                values: new object[] { 2, "Student", "dent", "Stu", 2, 1 });
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "UserId", "Discriminator", "Password", "Username", "CityId" },
-                values: new object[] { 3, "Student", "udent", "St", 2 });
+                columns: new[] { "UserId", "Discriminator", "Password", "Username", "CityId", "TechnologyId" },
+                values: new object[] { 3, "Student", "udent", "St", 2, 2 });
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "UserId", "Discriminator", "Password", "Username", "CityId" },
-                values: new object[] { 4, "Student", "tudent", "S", 3 });
+                columns: new[] { "UserId", "Discriminator", "Password", "Username", "CityId", "TechnologyId" },
+                values: new object[] { 4, "Student", "tudent", "S", 3, 3 });
 
             migrationBuilder.InsertData(
                 table: "Applications",
@@ -289,46 +255,6 @@ namespace StudentsInternships.Migrations
                 table: "Applications",
                 columns: new[] { "ApplicationId", "InternshipId", "Status", "StudentUserId" },
                 values: new object[] { 3, 3, null, 2 });
-
-            migrationBuilder.InsertData(
-                table: "InternshipTechnologies",
-                columns: new[] { "InternshipId", "TechnologyId" },
-                values: new object[] { 1, 1 });
-
-            migrationBuilder.InsertData(
-                table: "InternshipTechnologies",
-                columns: new[] { "InternshipId", "TechnologyId" },
-                values: new object[] { 1, 2 });
-
-            migrationBuilder.InsertData(
-                table: "InternshipTechnologies",
-                columns: new[] { "InternshipId", "TechnologyId" },
-                values: new object[] { 1, 4 });
-
-            migrationBuilder.InsertData(
-                table: "InternshipTechnologies",
-                columns: new[] { "InternshipId", "TechnologyId" },
-                values: new object[] { 2, 1 });
-
-            migrationBuilder.InsertData(
-                table: "StudentTechnologies",
-                columns: new[] { "StudentId", "TechnologyId" },
-                values: new object[] { 1, 1 });
-
-            migrationBuilder.InsertData(
-                table: "StudentTechnologies",
-                columns: new[] { "StudentId", "TechnologyId" },
-                values: new object[] { 1, 2 });
-
-            migrationBuilder.InsertData(
-                table: "StudentTechnologies",
-                columns: new[] { "StudentId", "TechnologyId" },
-                values: new object[] { 2, 4 });
-
-            migrationBuilder.InsertData(
-                table: "StudentTechnologies",
-                columns: new[] { "StudentId", "TechnologyId" },
-                values: new object[] { 2, 5 });
 
             migrationBuilder.InsertData(
                 table: "Cvs",
@@ -373,19 +299,19 @@ namespace StudentsInternships.Migrations
                 column: "CompanyUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_InternshipTechnologies_TechnologyId",
-                table: "InternshipTechnologies",
-                column: "TechnologyId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_StudentTechnologies_TechnologyId",
-                table: "StudentTechnologies",
+                name: "IX_Internships_TechnologyId",
+                table: "Internships",
                 column: "TechnologyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_CityId",
                 table: "Users",
                 column: "CityId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_TechnologyId",
+                table: "Users",
+                column: "TechnologyId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -394,16 +320,7 @@ namespace StudentsInternships.Migrations
                 name: "Cvs");
 
             migrationBuilder.DropTable(
-                name: "InternshipTechnologies");
-
-            migrationBuilder.DropTable(
-                name: "StudentTechnologies");
-
-            migrationBuilder.DropTable(
                 name: "Applications");
-
-            migrationBuilder.DropTable(
-                name: "Technologies");
 
             migrationBuilder.DropTable(
                 name: "Internships");
@@ -413,6 +330,9 @@ namespace StudentsInternships.Migrations
 
             migrationBuilder.DropTable(
                 name: "Cities");
+
+            migrationBuilder.DropTable(
+                name: "Technologies");
         }
     }
 }

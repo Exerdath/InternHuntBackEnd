@@ -21,7 +21,8 @@ namespace StudentsInternships.Controllers
         private readonly IMapper _mapper;
         private readonly LinkGenerator _linkGenerator;
 
-        public UsersController(IUserRepository repository, IStudentsRepository studentsRepository, ICompaniesRepository companiesRepository, IMapper mapper, LinkGenerator linkGenerator)
+        public UsersController(IUserRepository repository, IStudentsRepository studentsRepository,
+            ICompaniesRepository companiesRepository, IMapper mapper, LinkGenerator linkGenerator)
         {
             _repository = repository;
             _mapper = mapper;
@@ -77,7 +78,7 @@ namespace StudentsInternships.Controllers
 
                 return _mapper.Map<UserModel>(result);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Database failure");
             }
@@ -105,11 +106,11 @@ namespace StudentsInternships.Controllers
         }
 
         [HttpPatch]
-        public async Task<IActionResult> Patch(UserModel model)
+        public async Task<ActionResult<UserModel>> Patch(UserModel model)
         {
+            UserModel result;
             try
             {
-                var validate = false;
                 if (model.City != null)
                 {
                     int id = model.UserId;
@@ -117,8 +118,9 @@ namespace StudentsInternships.Controllers
                     student.Username = model.Username;
                     student.Password = model.Password;
                     student.City = _mapper.Map<City>(model.City);
+                    student.Technology = _mapper.Map<Technology>(model.Technology);
 
-                    validate = await _studentsRepository.EditStudent(student);
+                    result =_mapper.Map<UserModel>(await _studentsRepository.EditStudent(student));
                 }
                 else
                 {
@@ -128,17 +130,17 @@ namespace StudentsInternships.Controllers
                     company.Password = model.Password;
                     company.CompanyDescription = model.CompanyDescription;
 
-                    validate = await _companyRepository.EditCompany(company);
+                    result = _mapper.Map<UserModel>(await _companyRepository.EditCompany(company));
                 }
 
-                if (validate == false)
+                if (result == null)
                 {
                     return BadRequest("Edit mode failed");
                 }
 
-                return Ok("Edit was successfull");
+                return result;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Database failure");
             }

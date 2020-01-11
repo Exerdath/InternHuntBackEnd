@@ -6,7 +6,7 @@ namespace StudentsInternships.Data.Entities
     {
         public int TechnologyId { get; set; }
         public string Interest { get; set; }
-        public ICollection<StudentTechnology> StudentTechnologies { get; set; }
-        public ICollection<InternshipTechnology> InternshipTechnologies { get; set; }
+        public ICollection<Student> Students { get; set; }
+        public ICollection<Internship> Internships { get; set; }
     }
 }

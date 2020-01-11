@@ -13,6 +13,6 @@ namespace StudentsInternships.Data.Repositories
         Task<bool> SaveChangesAsync();
         Task<Company[]> GetAllCompaniesAsync();
         Task<Company> GetCompanyByIdAsync(int id);
-        Task<bool> EditCompany(Company company);
+        Task<Company> EditCompany(Company company);
     }
 }

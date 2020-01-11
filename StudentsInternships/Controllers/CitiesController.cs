@@ -42,7 +42,7 @@ namespace StudentsInternships.Controllers
 
 
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Database failure");
             }

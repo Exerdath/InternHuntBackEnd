@@ -9,10 +9,11 @@ namespace StudentsInternships.Data
         public InternHuntProfile()
         {
             CreateMap<Student, StudentModel>()
-                .ReverseMap();
+                   .ReverseMap();
 
-            CreateMap<Internship, InternshipModel>()
-                .ReverseMap();
+            CreateMap<Internship, InternshipModel>().ForMember(im=>im.User,opt=>opt.MapFrom(i=>i.Company))
+                .ReverseMap()
+                .ForMember(i => i.Company, opt => opt.MapFrom(im => im.User));
 
             CreateMap<Company, CompanyModel>()
                 .ReverseMap()

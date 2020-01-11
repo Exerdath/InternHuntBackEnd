@@ -13,8 +13,6 @@ namespace StudentsInternships.Data
         public DbSet<Cv> Cvs { get; set; }
         public DbSet<Technology> Technologies { get; set; }
         public DbSet<City> Cities { get; set; }
-        public DbSet<StudentTechnology> StudentTechnologies { get; set; }
-        public DbSet<InternshipTechnology> InternshipTechnologies { get; set; }
         public DbSet<User> Users { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -47,7 +45,13 @@ namespace StudentsInternships.Data
                 .HasMany(c => c.Internships)
                 .WithOne(i => i.City);
 
+            modelBuilder.Entity<Technology>()
+                .HasMany(t => t.Students)
+                .WithOne(s => s.Technology);
 
+            modelBuilder.Entity<Technology>()
+                .HasMany(t => t.Internships)
+                .WithOne(i => i.Technology);
 
 
             //One to one relationships
@@ -62,35 +66,6 @@ namespace StudentsInternships.Data
                 .HasForeignKey<Cv>(c => c.ApplicationId);
 
 
-            //Many to many relationships~~~~~~~~~~~~
-            modelBuilder.Entity<StudentTechnology>()
-                .HasKey(st => new { st.StudentId, st.TechnologyId });
-
-            modelBuilder.Entity<StudentTechnology>()
-                .HasOne(st => st.Student)
-                .WithMany(s => s.StudentTechnologies)
-                .HasForeignKey(st => st.StudentId);
-
-            modelBuilder.Entity<StudentTechnology>()
-                .HasOne(st => st.Technology)
-                .WithMany(t => t.StudentTechnologies)
-                .HasForeignKey(st => st.TechnologyId);
-
-
-            modelBuilder.Entity<InternshipTechnology>()
-                .HasKey(it => new { it.InternshipId, it.TechnologyId });
-
-            modelBuilder.Entity<InternshipTechnology>()
-                .HasOne(it => it.Internship)
-                .WithMany(i => i.InternshipTechnologies)
-                .HasForeignKey(it => it.InternshipId);
-
-            modelBuilder.Entity<InternshipTechnology>()
-                .HasOne(it => it.Technology)
-                .WithMany(t => t.InternshipTechnologies)
-                .HasForeignKey(it => it.TechnologyId);
-
-
             //Adding seed data~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
             //Students
@@ -100,28 +75,32 @@ namespace StudentsInternships.Data
                     UserId = 1,
                     Username = "Stud",
                     Password = "ent",
-                    CityId = 1
+                    CityId = 1,
+                    TechnologyId = 1
                 },
                 new
                 {
                     UserId = 2,
                     Username = "Stu",
                     Password = "dent",
-                    CityId = 2
+                    CityId = 2,
+                    TechnologyId = 1
                 },
                 new
                 {
                     UserId = 3,
                     Username = "St",
                     Password = "udent",
-                    CityId = 2
+                    CityId = 2,
+                    TechnologyId = 2
                 },
                 new
                 {
                     UserId = 4,
                     Username = "S",
                     Password = "tudent",
-                    CityId = 3
+                    CityId = 3,
+                    TechnologyId = 3
                 }
                 );
 
@@ -151,7 +130,8 @@ namespace StudentsInternships.Data
                     InternshipName="M1 Internship",
                     InternshipDescription="Microsoft 1 Internship",
                     CompanyId=6,
-                    CityId=1
+                    CityId=1,
+                    TechnologyId=1
                 },
                 new
                 {
@@ -159,7 +139,9 @@ namespace StudentsInternships.Data
                     InternshipName = "M2 Internship",
                     InternshipDescription = "Microsoft 2 Internship",
                     CompanyId = 6,
-                    CityId = 2
+                    CityId = 2,
+                    TechnologyId = 2
+
                 },
                 new
                 {
@@ -167,7 +149,8 @@ namespace StudentsInternships.Data
                     InternshipName = "A1 Internship",
                     InternshipDescription = "Apple 1 Internship",
                     CompanyId = 7,
-                    CityId = 3
+                    CityId = 3,
+                    TechnologyId = 3
                 },
                 new
                 {
@@ -175,7 +158,8 @@ namespace StudentsInternships.Data
                     InternshipName = "A2 Internship",
                     InternshipDescription = "Apple 2 Internship",
                     CompanyId = 7,
-                    CityId = 1
+                    CityId = 1,
+                    TechnologyId = 4
                 }
                 );;
 
@@ -249,56 +233,6 @@ namespace StudentsInternships.Data
                 {
                     TechnologyId = 5,
                     Interest = "Python"
-                });
-
-
-            //StudentTechnologies
-            modelBuilder.Entity<StudentTechnology>()
-                .HasData(new
-                {
-                    StudentId=1,
-                    TechnologyId=1
-                },
-                new
-                {
-                    StudentId = 1,
-                    TechnologyId = 2
-                },
-                new
-                {
-                    StudentId = 2,
-                    TechnologyId = 4
-                },
-                new
-                {
-                    StudentId = 2,
-                    TechnologyId = 5
-                }
-                );
-
-
-
-            //InternshipTechnologies
-            modelBuilder.Entity<InternshipTechnology>()
-                .HasData(new
-                {
-                    InternshipId=1,
-                    TechnologyId=1
-                },
-                new
-                {
-                    InternshipId = 1,
-                    TechnologyId = 2
-                },
-                new
-                {
-                    InternshipId = 2,
-                    TechnologyId = 1
-                },
-                new
-                {
-                    InternshipId = 1,
-                    TechnologyId = 4
                 });
 
             //Cities

@@ -24,5 +24,12 @@ namespace StudentsInternships.Data.Repositories
 
             return await query.ToArrayAsync();
         }
+
+        public async Task<City> getCityById(int cityId)
+        {
+            IQueryable<City> query = _context.Cities.Where(c=>c.CityId==cityId);
+
+            return await query.FirstOrDefaultAsync();
+        }
     }
 }

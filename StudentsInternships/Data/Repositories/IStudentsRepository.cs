@@ -14,6 +14,6 @@ namespace StudentsInternships.Data.Repositories
         Task<Student[]> GetAllStudentsAsync();
         Task<Student> GetStudentByUsernameAsync(string username);
         Task<Student> GetStudentByIdAsync(int id);
-        Task<bool> EditStudent(Student student);
+        Task<Student> EditStudent(Student student);
     }
 }

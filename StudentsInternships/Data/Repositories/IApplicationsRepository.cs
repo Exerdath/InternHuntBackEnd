@@ -9,7 +9,9 @@ namespace StudentsInternships.Data.Repositories
         Task<Application[]> GetAllApplicationsAsync();
         Task<bool> SaveChangesAsync();
         Task<Application[]> GetAppsById(int userId,string userType);
-        Task<Application> ApplyToInternship(Application app);
         Task<Application> ChangeAppStatus(Application app);
+        Task<bool> DeleteApp(int id);
+        Task<int > ApplyToInternship(int studentId, int internshipId);
+        Task<Application> GetAppById(int result);
     }
 }
