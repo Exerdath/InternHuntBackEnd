@@ -74,6 +74,12 @@ namespace StudentsInternships.Data.Repositories
                 
         }
 
+        public async Task<User> GetUserByUsernameAsync(string username)
+        {
+            IQueryable<User> query = _context.Users.Where(u => u.Username == username);
+            return await query.FirstOrDefaultAsync();
+        }
+
         public async Task<bool> SaveChangesAsync()
         {
             return (await _context.SaveChangesAsync()) > 0;

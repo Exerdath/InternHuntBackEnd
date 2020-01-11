@@ -17,9 +17,11 @@ namespace StudentsInternships.Data.Repositories
             _context = context;
         }
 
-        public void Add<Company>(Company company)
+        public async void Add<Company>(Company company)
         {
             _context.Add(company);
+            await SaveChangesAsync();
+
         }
 
         public async Task<Company> EditCompany(Company company)

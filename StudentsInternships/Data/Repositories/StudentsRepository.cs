@@ -17,9 +17,13 @@ namespace StudentsInternships.Data.Repositories
             _context = context;
         }
 
-        public void Add<Student>(Student student)
+        public async Task<bool> AddStudent(Student student)
         {
-            _context.Add(student);
+            student.City = await _context.Cities.Where(c => c.CityId == student.City.CityId).FirstOrDefaultAsync();
+            student.Technology = await _context.Technologies.Where(t => t.TechnologyId == student.Technology.TechnologyId).FirstOrDefaultAsync();
+
+            _context.Students.Add(student);
+            return await SaveChangesAsync();
         }
 
         public async Task<Student> EditStudent(Student student)

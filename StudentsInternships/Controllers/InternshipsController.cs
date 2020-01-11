@@ -54,14 +54,7 @@ namespace StudentsInternships.Controllers
             try
             {
                 var results = await _repository.GetInternshipsById(model.UserId, model.City == null ? "company" : "student");
-                if (!results.Any())
-                {
-                    return NotFound("No applications in the database");
-                }
-
                 return _mapper.Map<InternshipModel[]>(results);
-
-
             }
             catch (Exception)
             {

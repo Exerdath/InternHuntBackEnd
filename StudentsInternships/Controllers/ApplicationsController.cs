@@ -54,7 +54,6 @@ namespace StudentsInternships.Controllers
             try
             {
                 var results = await _repository.GetAppsById(model.UserId, model.City == null ? "company" : "student");
-
                 return _mapper.Map<AppsModel[]>(results);
             }
             catch (Exception)

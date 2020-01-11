@@ -13,8 +13,8 @@ namespace StudentsInternships.Data.Repositories
     {
         void Add<User>(User user);
         Task<bool> SaveChangesAsync();
-        //TODO not find by username
         Task<User> GetUserAsync(int id);
+        Task<User> GetUserByUsernameAsync(string username);
         Task<User[]> GetAllUsersAsync();
         Task<User[]> GetAllUsersByPassword(string password);
         Task<User> AuthenticateUserAsync(string username, string password);

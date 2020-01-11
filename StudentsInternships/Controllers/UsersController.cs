@@ -105,6 +105,48 @@ namespace StudentsInternships.Controllers
             }
         }
 
+        [HttpPost("signup")]
+        public async Task<IActionResult> Signup(SignupModel model)
+        {
+            try
+            {
+                var existing = await _repository.AuthenticateUserAsync(model.Username, model.Password);
+                if (existing != null)
+                {
+                    return BadRequest("Username in use");
+                }
+                if (model.UserType.Equals("student"))
+                {
+                    Student student = new Student();
+                    student.Username = model.Username;
+                    student.Password = model.Password;
+                    City cluj = new City();
+                    cluj.CityId = 1;
+                    cluj.CityName = "Cluj";
+                    student.City = cluj;
+                    Technology net = new Technology();
+                    net.TechnologyId = 1;
+                    net.Interest = ".Net";
+                    student.Technology = net;
+
+                    await _studentsRepository.AddStudent(student);
+                }
+                else
+                {
+                    Company company = new Company();
+                    company.Username = model.Username;
+                    company.Password = model.Password;
+                    _companyRepository.Add(company);
+                }
+
+                return Ok("User registered");
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Database failure");
+            }
+        }
+
         [HttpPatch]
         public async Task<ActionResult<UserModel>> Patch(UserModel model)
         {

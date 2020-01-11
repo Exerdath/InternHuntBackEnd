@@ -9,7 +9,7 @@ namespace StudentsInternships.Data.Repositories
 {
     public interface IStudentsRepository
     {
-        void Add<Student>(Student student);
+        Task<bool> AddStudent(Student student);
         Task<bool> SaveChangesAsync();
         Task<Student[]> GetAllStudentsAsync();
         Task<Student> GetStudentByUsernameAsync(string username);
